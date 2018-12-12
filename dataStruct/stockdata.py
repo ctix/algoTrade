@@ -1,22 +1,12 @@
 # coding: utf-8
-# pysudeo code
-# start from a given date , given fund amount , position management
-# scan every stock in the list , caculation total gain /lose money . make it
-# testable.  find a upwards trend stock, starting transacton/trading that begin
-# with daily regression/downwards  perferable
-#  build position in minute line , starting high frequency transaction
-# according to signals and positions , fund management and position management
-# till the end of the data set
-# coding functions to pandas day and week data set
-# basic dataset include ohlc ,cci ,mas ,bolling line
-# how to compute the probabilities of close price ,Bayiesan Methods???
-# write to mysql database of the whole years of day ,minutes basic features
 
 import pandas as pd
 import numpy as np
 
+
 class daysDataOfStock:
     """DF hold all the datum and return value only hold latest last ndays value """
+
     def __init__(self, fullname):
         stockday_type = np.dtype(
             {
@@ -40,20 +30,22 @@ class daysDataOfStock:
         return (self.DF.index[0], self.DF.index[-1])
 
     def getLatestDataFrame(self, latestNbars=60):
-        return self.DF[-1*latestNbars:] #Only return last n bars
+        return self.DF[-1*latestNbars:]  # Only return last n bars
         # self.DF = self.DF[-1*latestNbars:] #Only return last n bars
 
     def getWeekDatum(self):
         """get items daily ,summary to Weekly Datum """
         ohlc_dict = {
-            'open':'first',
-            'high':'max',
-            'low':'min',
-            'close':'last',
-            'vol':'sum'
-            }
+            'open': 'first',
+            'high': 'max',
+            'low': 'min',
+            'close': 'last',
+            'vol': 'sum'
+        }
         return self.DF.resample('W-Fri', how=ohlc_dict)
-         # DataFrame.resample('W-Fri', how=ohlc_dict)
+        # DataFrame.resample('W-Fri', how=ohlc_dict)
+
+
 
 class minuteOfStock:
     def __init__(self, fullname):
@@ -68,7 +60,7 @@ class minuteOfStock:
         try:
             _datum1m = np.fromfile(fullname, dtype=minute5)
         except IOError as e:
-            print ("IOError, file May not be Exist!!", e.args)
+            print("IOError, file May not be Exist!!", e.args)
             return
         self.DF = pd.DataFrame(_datum1m)
         self.DF = self.convertDateMin()
@@ -85,7 +77,7 @@ class minuteOfStock:
         datetime_ary = [str(i)[:12] for i in datetimelst]
         self.DF["datetime"] = pd.to_datetime(pd.Series(datetime_ary))
         # dtstr = self.dataframe["datetime"].\
-            # apply(lambda x: x.strftime('%Y-%m-%d %H:%M:%S'))
+        # apply(lambda x: x.strftime('%Y-%m-%d %H:%M:%S'))
         #self.dataframe.index = dtstr
         self.DF.index = self.DF["datetime"]
         return self.DF[['open', 'high', 'low', 'close', 'volume']]
@@ -94,24 +86,24 @@ class minuteOfStock:
         """the start and end  datetime of the whole dataFrame"""
         return (self.DF.index[0], self.DF.index[-1])
 
-    def getLatestDataFrame(self,latestNbars=2400):
+    def getLatestDataFrame(self, latestNbars=2400):
         """default to 10 days minutes dataset """
-        return self.DF[-1*self.latestNbars:] #Only return last n bars
+        return self.DF[-1*self.latestNbars:]  # Only return last n bars
 
-
-    def resampleNminsDatum(self,intervals='15min'):
+    def resampleNminsDatum(self, intervals='15min'):
         """resample to N minutes DataFrame,
         intervals used value 5min , 15min, 30min"""
         ohlc_dict = {
-            'open':'first',
-            'high':'max',
-            'low':'min',
-            'close':'last',
-            'volume':'sum'
-            }
-        return self.DF.resample(intervals, how=ohlc_dict, loffset="-1s", label='right')
-
-
+            'open': 'first',
+            'high': 'max',
+            'low': 'min',
+            'close': 'last',
+            'volume': 'sum'
+        }
+        return self.DF.resample(intervals,
+                                how=ohlc_dict,
+                                loffset="-1s",
+                                label='right')
 
 
 # first begin with byd minutes and day line for simulating
@@ -119,9 +111,8 @@ class minuteOfStock:
 if __name__ == "__main__":
     pass
     test_datum_path = "..\\tests\\datum\\"
-    byd_minsfile= test_datum_path + "sz002594.lc1"
-    byd_dayfile= test_datum_path + "sz002594.day"
-
+    byd_minsfile = test_datum_path + "sz002594.lc1"
+    byd_dayfile = test_datum_path + "sz002594.day"
 
     # in[14]:
     # get the starting date for the simulation minutes line ,
@@ -150,7 +141,6 @@ if __name__ == "__main__":
     # plt.fill_between(mstd.index, ma-2*mstd, ma+2*mstd, color='b', alpha=0.2)
     # plt.fill_between(mstd.index,0, normvols*40, color='y', alpha=0.2)
     #plt.plot(serclose.index, signals, 'r')
-
 
     # per minute signals per bbi
     # numtic = 720
