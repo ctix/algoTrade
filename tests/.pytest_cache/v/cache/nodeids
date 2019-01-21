@@ -1,0 +1,4 @@
+[
+  "test_tag_minutes_series.py::TestMinuteStockClass::()::test_data_files_exist",
+  "test_tag_minutes_series.py::TestMinuteStockClass::()::test_data_files_not_exist"
+]

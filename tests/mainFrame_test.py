@@ -3,13 +3,19 @@ import os
 import pytest
 
 
-@pytest.fixture
-def global_paths():
-    pytest.dat_path = "./datum/"
-    pytest.sh_path = pytest.dat_path + "sh/"
-    pytest.sz_path = pytest.dat_path + "sz/"
-    pytest.daily_path = pytest.sz_path + "lday/"
-    pytest.min_path = pytest.sh_path + "minline/"
+# @pytest.fixture
+# def global_paths():
+    # pytest.dat_path = "./datum/"
+    # pytest.sh_path = pytest.dat_path + "sh/"
+    # pytest.sz_path = pytest.dat_path + "sz/"
+    # pytest.daily_path = pytest.sz_path + "lday/"
+    # pytest.min_path = pytest.sz_path + "minline/"
+
+    # pytest.jjw_min_file = pytest.min_path + "sz300474" + "lc1"
+
+
+def test_jjw_min_file_exist(global_paths):
+    os.path.isfile(pytest.jjw_min_file)
 
 
 def setup_module(module):
